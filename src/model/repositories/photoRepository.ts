@@ -56,7 +56,7 @@ class PhotoRepository {
         try {
             await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(this.photos));
         } catch (e) {
-            console.warn('Failed persisting photos', e);
+            console.warn('Falha na persistência das fotos', e);
         }
     }
 }
