@@ -32,7 +32,7 @@ class PhotoRepository {
         await this.persist();
         this.emit();
     }
-
+    
     getPhotos(): MyPhoto[] {
         return [...this.photos];
     }

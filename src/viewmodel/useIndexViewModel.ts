@@ -35,7 +35,6 @@ function useIndexViewModel(): IndexState & IndexActions & { cameraRef: any } {
         }
     }, [permission]);
 
-    // Sync with repository updates (so other screens can modify repo)
     useEffect(() => {
         const unsub = PhotoRepository.subscribe((list) => setPhotos(list));
         return unsub;
@@ -76,9 +75,8 @@ function useIndexViewModel(): IndexState & IndexActions & { cameraRef: any } {
         } catch { }
 
         let novaFoto = { uri: result.uri, latitude: latitude, longitude: longitude, timestamp: Date.now() };
-        // persist to repository (will trigger subscribers)
+
         PhotoRepository.addPhoto(novaFoto);
-        // ensure local state is in sync
         setPhotos(PhotoRepository.getPhotos());
         setLoading(false);
     }
@@ -93,7 +91,7 @@ function useIndexViewModel(): IndexState & IndexActions & { cameraRef: any } {
         requestCameraPermission,
         requestLocationPermission,
         takePhoto,
-        cameraRef, 
+        cameraRef,
     };
 }
 

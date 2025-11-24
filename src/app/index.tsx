@@ -1,7 +1,16 @@
-import { View, Text, Button, TouchableOpacity, StyleSheet } from 'react-native';
 import { CameraView } from 'expo-camera';
 import useIndexViewModel from '../viewmodel/useIndexViewModel';
 import { router } from 'expo-router';
+
+import {
+    Box,
+    Text,
+    Button,
+    ButtonText,
+    Pressable,
+    HStack,
+    VStack,
+} from "@gluestack-ui/themed";
 
 export default function App() {
 
@@ -21,133 +30,114 @@ export default function App() {
     // ---- Tela pedindo permissão da câmera ----
     if (!cameraPermissionGranted) {
         return (
-            <View style={styles.container}>
-                <Text style={styles.message}>Nós precisamos de permissão para usar sua câmera</Text>
-                <Button onPress={requestCameraPermission} title="Conceder permissão" />
-            </View>
+            <Box flex={1} justifyContent="center" alignItems="center" px={20} bgColor="#0f0f0f">
+                <VStack space="md" alignItems="center">
+                    <Text color="white" textAlign="center" fontSize={18} opacity={0.9}>
+                        Nós precisamos de permissão para usar sua câmera
+                    </Text>
+
+                    <Button
+                        size="lg"
+                        bgColor="#6C63FF"
+                        borderRadius={10}
+                        onPress={requestCameraPermission}
+                    >
+                        <ButtonText color="white">Conceder permissão</ButtonText>
+                    </Button>
+                </VStack>
+            </Box>
         );
     }
 
     // ---- Tela pedindo permissão da localização ----
     if (!locationPermissionGranted) {
         return (
-            <View style={styles.container}>
-                <Text style={styles.message}>Nós precisamos de permissão para obter sua localização</Text>
-                <Button onPress={requestLocationPermission} title="Conceder permissão" />
-            </View>
+            <Box flex={1} justifyContent="center" alignItems="center" px={20} bgColor="#0f0f0f">
+                <VStack space="md" alignItems="center">
+                    <Text color="white" textAlign="center" fontSize={18} opacity={0.9}>
+                        Nós precisamos de permissão para obter sua localização
+                    </Text>
+
+                    <Button
+                        size="lg"
+                        bgColor="#6C63FF"
+                        borderRadius={10}
+                        onPress={requestLocationPermission}
+                    >
+                        <ButtonText color="white">Conceder permissão</ButtonText>
+                    </Button>
+                </VStack>
+            </Box>
         );
     }
 
     return (
-        <View style={styles.container}>
-            <View style={styles.cameraSection}>
+        <Box flex={1} bgColor="black">
 
+            <Box flex={1}>
                 <CameraView
                     ref={cameraRef}
-                    style={styles.camera}
+                    style={{ flex: 1 }}
                     facing={facing}
                 />
 
-                <View style={styles.controls}>
-                    <TouchableOpacity style={styles.button} onPress={toggleCameraFacing}>
-                        <Text style={styles.text}>Flip</Text>
-                    </TouchableOpacity>
+                {/* CONTROLES */}
+                <HStack
+                    position="absolute"
+                    bottom={32}
+                    left={0}
+                    right={0}
+                    justifyContent="space-evenly"
+                    px={24}
+                >
+                    {/* Botão Flip */}
+                    <Pressable
+                        onPress={toggleCameraFacing}
+                        bgColor="rgba(0,0,0,0.5)"
+                        px={16}
+                        py={10}
+                        borderRadius={12}
+                        minWidth={90}
+                        alignItems="center"
+                    >
+                        <Text color="white" fontWeight="$bold" fontSize={14}>
+                            Flip
+                        </Text>
+                    </Pressable>
 
-                    <TouchableOpacity
-                        style={styles.button}
+                    {/* Capturar */}
+                    <Pressable
                         onPress={takePhoto}
                         disabled={loading}
+                        bgColor="rgba(255,255,255,0.15)"
+                        px={20}
+                        py={12}
+                        borderRadius={50}
+                        style={{ borderWidth: 2, borderColor: "white" }}
+                        alignItems="center"
                     >
-                        <Text style={styles.text}>{loading ? "Fotografando..." : "Capturar"}</Text>
-                    </TouchableOpacity>
+                        <Text color="white" fontWeight="$bold" fontSize={15}>
+                            {loading ? "..." : "●"}
+                        </Text>
+                    </Pressable>
 
-                    <View style={styles.button}>
-                        <TouchableOpacity style={styles.button} onPress={() => router.push('/galery')}>
-                            <Text style={styles.text}>Ir para Galeria ({photos.length})</Text>
-                        </TouchableOpacity>
-                    </View>
-                </View>
+                    {/* Galeria */}
+                    <Pressable
+                        onPress={() => router.push('/galery')}
+                        bgColor="rgba(0,0,0,0.5)"
+                        px={16}
+                        py={10}
+                        borderRadius={12}
+                        minWidth={110}
+                        alignItems="center"
+                    >
+                        <Text color="white" fontWeight="$bold" fontSize={14}>
+                            Galeria ({photos.length})
+                        </Text>
+                    </Pressable>
+                </HStack>
+            </Box>
 
-            </View>
-
-        </View>
+        </Box>
     );
-
 }
-
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-    },
-    message: {
-        textAlign: 'center',
-        paddingBottom: 10,
-    },
-    cameraSection: {
-        flex: 1,
-    },
-    camera: {
-        flex: 1,
-    },
-    controls: {
-        position: 'absolute',
-        bottom: 24,
-        left: 0,
-        right: 0,
-        flexDirection: 'row',
-        justifyContent: 'space-evenly',
-        paddingHorizontal: 24,
-    },
-    button: {
-        alignItems: 'center',
-        paddingVertical: 8,
-        paddingHorizontal: 16,
-        backgroundColor: 'rgba(0,0,0,0.4)',
-        borderRadius: 8,
-    },
-    text: {
-        fontSize: 16,
-        fontWeight: 'bold',
-        color: 'white',
-    },
-    listSection: {
-        flex: 1,
-        backgroundColor: '#f5f5f5',
-    },
-    listContent: {
-        padding: 12,
-        gap: 12,
-    },
-    itemRow: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        backgroundColor: 'white',
-        borderRadius: 10,
-        padding: 10,
-        shadowColor: '#000',
-        shadowOpacity: 0.1,
-        shadowRadius: 6,
-        shadowOffset: { width: 0, height: 2 },
-        elevation: 2,
-    },
-    thumb: {
-        width: 64,
-        height: 64,
-        borderRadius: 6,
-        backgroundColor: '#ddd',
-        marginRight: 12,
-    },
-    itemTextBlock: {
-        flex: 1,
-    },
-    itemTitle: {
-        fontSize: 14,
-        fontWeight: '600',
-        marginBottom: 4,
-    },
-    itemCoords: {
-        fontSize: 12,
-        color: '#333',
-    },
-});

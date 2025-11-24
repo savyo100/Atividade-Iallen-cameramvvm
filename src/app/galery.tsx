@@ -1,7 +1,10 @@
-import { StyleSheet, FlatList, View, Image, Text } from "react-native";
+import { FlatList, StyleSheet } from "react-native";
 import { useEffect, useState } from "react";
 import PhotoRepository from "../model/repositories/photoRepository";
 import MyPhoto from "../model/entities/myPhoto";
+
+// gluestack UI
+import { Box, Text, Image } from "@gluestack-ui/themed";
 
 export default function Galery() {
     const [photos, setPhotos] = useState<MyPhoto[]>([]);
@@ -12,17 +15,21 @@ export default function Galery() {
     }, []);
 
     return (
-        <View style={styles.listSection}>
+        <Box style={styles.listSection}>
             <FlatList
                 contentContainerStyle={styles.listContent}
                 data={photos}
                 keyExtractor={(item) => `${item.timestamp}-${item.uri}`}
                 renderItem={({ item }) => (
-                    <View style={styles.itemRow}>
+                    <Box style={styles.itemRow}>
 
-                        <Image source={{ uri: item.uri }} style={styles.thumb} />
+                        <Image
+                            source={{ uri: item.uri }}
+                            alt="foto"
+                            style={styles.thumb}
+                        />
 
-                        <View style={styles.itemTextBlock}>
+                        <Box style={styles.itemTextBlock}>
                             <Text style={styles.itemTitle}>Foto</Text>
 
                             <Text style={styles.itemCoords}>
@@ -30,12 +37,12 @@ export default function Galery() {
                                     ? `Lat: ${item.latitude.toFixed(6)}  Lon: ${item.longitude?.toFixed(6)}`
                                     : "Sem localização"}
                             </Text>
-                        </View>
+                        </Box>
 
-                    </View>
+                    </Box>
                 )}
             />
-        </View>
+        </Box>
     );
 }
 
