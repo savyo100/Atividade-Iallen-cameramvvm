@@ -21,3 +21,10 @@ Aplicativo Android desenvolvido usando a arquitetura **MVVM** para demonstrar o 
 1. Clone este repositório:  
    ```bash
    git clone https://github.com/savyo100/Atividade-Iallen-cameramvvm.git
+2. Navegue até o diretório do projeto:
+   ```bash
+   cd nome-do-projeto
+Instale as dependências:
+npm install
+Inicie o aplicativo:
+npx expo start
