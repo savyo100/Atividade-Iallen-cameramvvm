@@ -1,25 +1,28 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import MyPhoto from "../model/entities/myPhoto";
+import PhotoRepository from "../model/repositories/photoRepository";
 
 type GaleryState = {
     Photos: MyPhoto[];
     Loading: boolean;
 };
 
-function useGaleryViewModel(): GaleryState & { addPhoto: (photo: MyPhoto) => void } {
+function useGaleryViewModel(): GaleryState {
     const [Photos, setPhotos] = useState<MyPhoto[]>([]);
-    const [Loading, setLoading] = useState<boolean>(false);
+    const [Loading, setLoading] = useState<boolean>(true);
 
-    // Função para adicionar fotos tiradas
-    function addPhoto(photo: MyPhoto) {
-        setPhotos((prev) => [...prev, photo]);
+    useEffect(() => {
+        const unsub = PhotoRepository.subscribe((list) => {
+            setPhotos(list);
+            setLoading(false);
+        });
 
-    }
+        return unsub;
+    }, []);
 
     return {
         Photos,
         Loading,
-        addPhoto,
     };
 }
 
