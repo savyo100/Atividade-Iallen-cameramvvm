@@ -11,6 +11,7 @@ import {
     HStack,
     VStack,
 } from "@gluestack-ui/themed";
+import React from 'react';
 
 export default function App() {
 

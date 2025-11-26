@@ -5,6 +5,7 @@ import MyPhoto from "../model/entities/myPhoto";
 
 // gluestack UI
 import { Box, Text, Image } from "@gluestack-ui/themed";
+import React from "react";
 
 export default function Galery() {
     const [photos, setPhotos] = useState<MyPhoto[]>([]);
